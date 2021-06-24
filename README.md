@@ -1,6 +1,7 @@
 # A Curated List of PyWebIO App Demos
 *Every .py file generates a web app*
-*To test the app, use `start_server()` to run `main()`.
+
+*To test the app, use `start_server()` to run `main()`*
 
 
 - #### curd_table.py 
