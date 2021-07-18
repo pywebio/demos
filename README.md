@@ -1,7 +1,13 @@
 # A Curated List of PyWebIO App Demos
-*Every .py file generates a web app*
+*Every `.py` file generates a web app*
 
 *To test the app, use `start_server()` to run `main()`*
+
+- #### drop-in-Gomoku.py
+
+    > 
+    > A web based Gomoku (AKA GoBang, Five in a Row) game made with <100 lines of Python code.
+    > More about Gomoku: https://en.wikipedia.org/wiki/Gomoku
 
 
 - #### curd_table.py 
