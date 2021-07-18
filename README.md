@@ -7,6 +7,9 @@
 
     > 
     > A web based Gomoku (AKA GoBang, Five in a Row) game made with <100 lines of Python code.
+    > 
+    > Live demo: https://demo.pyweb.io/app/drop-in-gomoku/
+    > 
     > More about Gomoku: https://en.wikipedia.org/wiki/Gomoku
 
 
