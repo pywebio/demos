@@ -1,7 +1,8 @@
 # A Curated List of PyWebIO App Demos
-*Every `.py` file generates a web app*
 
-*To test the app, use `start_server()` to run `main()`*
+*Every `.py` file generates a web app. Copy it to pyweb.io IDE, and run them as is.*
+
+*To run a demo on a localhost, simply append `start_server(main)` to the end of a `.py` file and run.*
 
 - #### drop-in-Gomoku.py
 
