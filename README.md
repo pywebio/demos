@@ -20,6 +20,13 @@
     > Construct a CRUD datatable to modify data source.
 
 
+- #### tab_with_input.py
+    
+    > 
+    > Create one page with different tabs and allow users switch between them and submit forms.
+    > 
+    > Live demo: https://demo.pyweb.io/tab_with_input/
+ 
 
 - #### name_generator.py 
     
