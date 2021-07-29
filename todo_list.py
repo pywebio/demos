@@ -8,15 +8,19 @@ from pywebio.input import *
 from functools import partial
 import pickle
 
+todo_data_file = '__todo_list_tasks.ob'
+
 def complete_task(choice: str, task: str, tasks):
+    global todo_data_file
     if choice == 'Complete':
         tasks.remove(task)
-        with open('__todo_list_tasks.ob', 'wb') as fp:
+        with open(todo_data_file, 'wb') as fp:
             pickle.dump(tasks, fp)
     clear('tasks')
     if tasks: display_task(tasks)
         
 def add_task(tasks):
+    global todo_data_file
     task = input(
                 type=TEXT,
                 required=True,
@@ -25,7 +29,7 @@ def add_task(tasks):
                 help_text='Try: "Write an article"',
             )
     tasks.append(task)
-    with open('__todo_list_tasks.ob', 'wb') as fp:
+    with open(todo_data_file, 'wb') as fp:
         pickle.dump(tasks, fp)
     clear('tasks')
     display_task(tasks)
@@ -48,9 +52,19 @@ def display_task(tasks):
 @platform.utils.seo('To-Do List', 'A to-do list made using PyWebIO.')
 def main():
     'A todo list app built on pyweb.io'
-    tasks = []
-    with open ('__todo_list_tasks.ob', 'rb') as fp:
-        tasks = pickle.load(fp)
+    global todo_data_file
+    
+    #Read file to load previous todo items. It handles edge cases like missing file and empty file.
+    try:
+        with open (todo_data_file, 'rb') as fp:
+            try: 
+                tasks = pickle.load(fp)
+            except EOFError:
+                tasks = []
+    except IOError:
+        with open(todo_data_file, 'w') as fp:
+            tasks = []
+
 
     put_html(r"""<h1 align="center"><strong>📝 To-Do List</strong></h1>""")
     with use_scope('tasks'):
