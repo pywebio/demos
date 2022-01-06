@@ -1,7 +1,11 @@
+#How to start
+#1) define function: generate_datatable(). Make sure it returns your table as a 2d array (as shown in line 86-96).
+#2) customize function edit_table() and delete_table().
+#3) use line133 to instantiate a CRUDTable object, and use CRUDTable.put_crud_table() method to output it to your web app as in line 134.
+
 from pywebio.output import *
 from pywebio.input import *
 from pywebio.session import *
-
 from functools import partial
 
 class CRUDTable():
@@ -11,16 +15,15 @@ class CRUDTable():
     :param edit_func: custom function that edits, requires parameter "i" (index)
     :param del_func: custom function that deletes, requires parameter "i" (index)
     '''
-
     def __init__(self, gen_data_func, edit_func, del_func):
         
         self.datatable = gen_data_func()
         self.gen_data_func = gen_data_func
         self.edit_func = edit_func
         self.del_func = del_func
+
     
     def put_crud_table(self):
-
         # the CRUD table without the header
         table = []
         
@@ -33,7 +36,7 @@ class CRUDTable():
                 # get each row element of the data table row
                 table_row = [put_text(row_element) for row_element in table_row] + [
                     # use i - 1 here so that it counts after the header row.
-                    put_buttons(["◀️"], onclick=partial(self.handle_edit_delete, custom_func=self.edit_func,i=i)),
+                    put_buttons(["◀️"], onclick=partial(self.handle_edit_delete, custom_func=self.edit_func, i=i)),
                     put_buttons(["✖️"], onclick=partial(self.handle_edit_delete, custom_func=self.del_func, i=i))
                 ]              
                 table.append(table_row)
@@ -53,17 +56,15 @@ class CRUDTable():
         
         if custom_func == self.edit_func:
         # if edit function, just do custom_func(i) without confirmation
-            custom_func(i)
-            # refresh table
-            self.datatable = self.gen_data_func()
+            self.datatable = custom_func(self.datatable, i)
+            # refresh table output
             self.put_crud_table()
         
         # if it's the delete function, ask for confirmation
         if custom_func == self.del_func:
             
             # melt the data (row becomes key, value)
-            datatable_melt = list(zip(self.datatable[0], self.datatable[i+1]))
-
+            datatable_melt = list(zip(self.datatable[0], self.datatable[i]))
             popup(
                 '⚠️ Are you sure you want to delete?',
                 [
@@ -75,14 +76,19 @@ class CRUDTable():
     
     def handle_confirm(self, i):
         ''' if confirm button pressed in deletion confirmation, delete, and also close popup'''
-        self.del_func(i)
+        self.datatable = self.del_func(self.datatable, i)
         close_popup()
-        
-        # refresh table
-        self.datatable = self.gen_data_func()
+        # refresh table output
         self.put_crud_table()
 
-sample_table = [
+
+def generate_datatable():
+    '''
+    custom generate function to use for the CRUD table
+    function for generating data.
+    index 0 should be the headers.
+    '''
+    sample_table = [
         ['Month', 'YouTube views', 'MoM growth'],
         ['2020-11', '167', '-'],
         ['2020-12', '233', '4%'],
@@ -93,48 +99,37 @@ sample_table = [
         ['2021-05', '88588', '1125%'],
         ['2021-05', '6500', '100%']
     ]
-
-
-def generate_datatable():
-    '''
-    custom generate function to use for the CRUD table
-    function for generating data.
-    index 0 should be the headers.
-    '''
     # datatable = [['header1', 'header2']] + data
     # here, data should be format [[row1col1,row1col2], [row2col1,row2col2]]
     # (notice that sublist size = 2 = # of header labels
-    
-    # I use [[filepath] for filepath... because pwl.find_blogfile() 
-    # generates list of strings. doing list addition without [filepath] 
-    # breaks strings and puts an alphabet in each table.
-    
+
     return sample_table
 
 
-def edit_table(i):
+def edit_table(table, i):
     '''
     custom edit function to use for the CRUD table
     load an old blog post, edit it
     '''
-    sample_table[i][1] = input('input new view data for %s'% sample_table[i][0])
+    table[i][1] = input('input new data for %s: %s'% (table[0][0], table[i][0]))
+    return table
     
-        
-def delete_table(i):
+    
+def delete_table(table, i):
     '''
     custom delete function to use for the CRUD table
     delete specific file
     '''
-    sample_table.pop(i)
+    table.pop(i)
+    return table
 
 
 def main():
 
     '''CRUD table demo'''
-    
+
     # Header
     # datatable = [header, row1, row2, row3] for the crud table
     growth_table = CRUDTable(gen_data_func=generate_datatable, edit_func=edit_table, del_func=delete_table)
     growth_table.put_crud_table()
     
-    hold()
