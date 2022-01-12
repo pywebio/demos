@@ -59,7 +59,7 @@ TPL = """
             <li><a href="javascript:iframe_open('{{url}}')">{{name}}</a></li>
             {% end %}
             {% for name, url in dirs %}
-            <li><a href="javascript:dir_open('{{url}}')">{{name}}\</a></li>
+            <li><a href="javascript:dir_open('{{url}}')">{{name}}/</a></li>
             {% end %}
         </ul>
     </div>
