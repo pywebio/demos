@@ -1,3 +1,4 @@
+# This demo requires PyWebIO v1.6+
 from pywebio import *
 from pywebio.output import *
 from pywebio.input import *
@@ -14,7 +15,7 @@ def add_new_from_button():
 
 # add extra input fields when user checks the 'add new' radio button
 @use_scope('radio_section', clear=True)
-def add_new_from_radio(item_input, test):
+def add_new_from_radio(item_input):
     if item_input == 'Add New':
         put_input('new_1', label='new input invoked by radio button -1')
         put_input('new_2', label='new input invoked by radio button -2')
@@ -25,7 +26,7 @@ def add_new_from_radio(item_input, test):
 def save_data(pin):
     user_input_list = ['more_questions', 'foo', 'new_1', 'new_2'] 
     for k in user_input_list:
-        put_text(k+': '+pin[k])
+        put_text(k+': '+str(pin[k]))
 
 
 def main():
