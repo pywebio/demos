@@ -43,7 +43,7 @@
     > 
     > Demo advanced button actions
     > 
-    > Live demo: https://demo.pyweb.io/first-project/todo_list/
+    > Live demo: https://demo.pyweb.io/first-project/todo/
     > 
     > *Forked from https://github.com/ngshiheng/pywebio-todolist*
 
