@@ -10,9 +10,11 @@ Live demo: https://demo.pyweb.io/web3/transaction-lookup/app/
 ## How to run the app
 1) Set up a virtual env. (optional, but recommended)
 2) Install the required libraries as listed in requirements.txt
-3) Get an Infura URL following this tutorial: https://blog.infura.io/getting-started-with-infura-28e41844cc89/#step-four-control-how-your-api-can-be-used-enable-your-custom-security-settings-
+3) Get an Infura URL and add it to app.py. Following this tutorial to work with Infura APIs: https://blog.infura.io/getting-started-with-infura-28e41844cc89/#step-four-control-how-your-api-can-be-used-enable-your-custom-security-settings-
 4) Run `python app.py` in a command prompt. The web service should get started on localhost:8080. Change the port number in app.py if there is a port conflict.
 5) Host it on the cloud for free and get a URL to share it with others: https://www.pyweb.io/docs/pyweb-builder/getting-started-hello-world/
+
+> Note: The first run will take some time as the app is pulling data from Infura to build a chart, and the data will be saved to a local pickle file.
 
 ## Questions?
 Join our Discord Server: https://discord.gg/MvaCcg76Z7
