@@ -1,5 +1,6 @@
 import plotly.express as px
 import pickle
+from app import _web3
 
 #At first run, download data for the latest blocks and save to a local pickle file
 def generate_data(n=1000):
