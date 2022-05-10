@@ -49,7 +49,6 @@ def display_task(tasks):
         scope='tasks',
     )
     
-@platform.utils.seo('To-Do List', 'A to-do list made using PyWebIO.')
 def main():
     'A todo list app built on pyweb.io'
     global todo_data_file

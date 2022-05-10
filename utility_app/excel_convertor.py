@@ -4,7 +4,7 @@ from pywebio.input import *
 
 def main():
     put_markdown('# 🗃 Manufacturing Data Pre-processing')
-    put_text('')
+    put_text('This demo app only shows file selection function, and it does not upload your file.')
     
     input_group('Excel File Convertor', inputs=[
         input('Data source (manufacturer ID)', name='manufacturer'),
