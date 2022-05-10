@@ -36,10 +36,8 @@ def main():
     ticker = input('Input a stock ticker, and see latest data', 
                    help_text='try TSLA or AAPL')
     put_markdown('# 👋 Hi there! Check your stock.')
-    #put_text(ticker)
-    #put_row([
-    #    put_html(analysis_html('INTC')),
-    #    put_html(analysis_html('TSLA')), 
-    #    ])
-    put_collapse(ticker, [
-    put_html(analysis_html(ticker))], open=True)
+    put_collapse(ticker, [put_html(analysis_html(ticker))], open=True)
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

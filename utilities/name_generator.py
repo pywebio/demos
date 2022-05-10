@@ -65,3 +65,5 @@ def main():
     textarea('Tell us how to improve the tool', help_text='Please share with us what other features you like to see.')
     toast('Thanks for submitting your feedback!')
     
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

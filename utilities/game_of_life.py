@@ -52,11 +52,11 @@ def check_array(string):
 
 @use_scope('example', clear=True)
 def show_example(choice):
-	if choice == 'Sample solution':
-	    put_code(solution_code, language='python', rows=20)
-	if choice == 'Sample initial inputs': 
-	    put_scrollable(put_markdown(input_1), height=400)
-	    
+    if choice == 'Sample solution':
+        put_code(solution_code, language='python', rows=20)
+    if choice == 'Sample initial inputs': 
+        put_scrollable(put_markdown(input_1), height=400)
+    
 def step_limit(n):
     if n <= 0: 
         return 'We cannot go back in time'
@@ -188,3 +188,7 @@ def main():
     
     put_markdown('## [Run another simulation](https://pyweb.io/app/34709/)')
     session.hold()
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

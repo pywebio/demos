@@ -25,3 +25,6 @@ def main():
         put_markdown('It has been processed. The new data file is saved in your shared folder.'),
         put_html('<button type="button" onClick="window.location.reload();">Convert another file</button>')
         ])
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

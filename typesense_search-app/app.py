@@ -66,7 +66,7 @@ def put_schema():
 
 @use_scope('results', clear=True)
 def put_search_results(search_string=str(), query_by='company_name'):
-    put_markdown('### Search Results for `%s` by `%s`':%(search_string, query_by))
+    put_markdown('### Search Results for `%s` by `%s`'%(search_string, query_by))
     search_parameters = {
         'q'         : search_string,
         'query_by'  : query_by,

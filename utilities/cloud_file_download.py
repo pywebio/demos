@@ -1,7 +1,6 @@
 from pywebio import *
 from pywebio.output import *
 from pywebio.input import *
-from pywebio.session import hold 
 
 def main():
     #read file
@@ -14,4 +13,7 @@ def main():
             fp.write(content)
     
     put_file('download_filename.txt', content, 'download link')
-    hold()
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

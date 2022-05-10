@@ -94,3 +94,7 @@ def main():
     show_goboard()
     clear('turn_status')
     put_text('Game over. The winner is %s!\nRefresh page to join a new round.' % winner())
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

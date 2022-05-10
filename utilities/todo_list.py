@@ -71,3 +71,7 @@ def main():
         if tasks: display_task(tasks)
         while True:
             add_task(tasks)
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

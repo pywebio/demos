@@ -52,5 +52,6 @@ def main():
         put_input('something', label='input something to show as a toast message')
         put_button('submit', onclick=lambda: toast(pin.something))
 
-    if __name__ == '__main__':
-        start_server(main, port=8080, debug=True)
+
+if __name__ == '__main__':
+    start_server(main, port=8080, debug=True)
