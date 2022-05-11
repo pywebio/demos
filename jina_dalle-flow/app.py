@@ -19,7 +19,7 @@ Note: If don't like what you see, simply re-draw a new batch. Enjoy creating!
 '''
 
 credits = r'''### App source code:
-https://github.com/pywebio/demos/blob/main/dalle-flow/app.py
+https://github.com/pywebio/demos/tree/main/jina_dalle-flow
 
 ### Credits
 
