@@ -1,7 +1,4 @@
-## Inspiration
-JinaAI's DALL·E Flow project: A Human-in-the-Loop workflow for creating HD images from text.
-
-https://github.com/jina-ai/dalle-flow
+Live demo: https://demo.pyweb.io/live/jina_dalle-flow/app/
 
 ## How the app works:
 
@@ -12,8 +9,13 @@ https://github.com/jina-ai/dalle-flow
 
 Video demo: https://www.youtube.com/watch?v=SSxkz2L8Z5Q&ab_channel=PyWebIO
 
-## Credits to the key open source projects used in this app
 
+## Inspiration
+JinaAI's DALL·E Flow project: A Human-in-the-Loop workflow for creating HD images from text.
+
+https://github.com/jina-ai/dalle-flow
+
+### Credits to the key open source projects used in this app
 
 JinaAI
 * [**Dalle-flow**](https://github.com/jina-ai/dalle-flow)

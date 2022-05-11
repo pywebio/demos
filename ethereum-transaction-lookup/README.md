@@ -1,7 +1,7 @@
 ## How the app works
 This app lets you look up Ether blocks, transactions, miner info through a web interface.
 
-Live demo: https://demo.pyweb.io/web3/web3/transaction-lookup/app/
+Live demo: https://demo.pyweb.io/live/ethereum-transaction-lookup/app/
 
 
 <img width="600" alt="image" src="https://user-images.githubusercontent.com/18755763/167014938-dcb63602-5699-4b33-a155-a51b2c9ec9f2.png">
