@@ -5,16 +5,16 @@ from typesense import collection
 import typesense
 import string
 import random
-
+import os
 
 # Use your own config of typesense server
 client = typesense.Client({
   'nodes': [{
-    'host': '', # For Typesense Cloud use xxx.a1.typesense.net
-    'port': '',      # For Typesense Cloud use 443
-    'protocol': ''   # For Typesense Cloud use https
+    'host': os.environ["TS_HOST"], # For Typesense Cloud use xxx.a1.typesense.net
+    'port': 443,      # For Typesense Cloud use 443
+    'protocol': 'https',   # For Typesense Cloud use https
   }],
-  'api_key': '', #Add your own API key here
+  'api_key': os.environ["TS_API_KEY"], #Add your own API key here
   'connection_timeout_seconds': 2
 })
 
@@ -66,7 +66,7 @@ def put_schema():
 
 @use_scope('results', clear=True)
 def put_search_results(search_string=str(), query_by='company_name'):
-    put_markdown('### Search Results for `%s` by `%s`':%(search_string, query_by))
+    put_markdown('### Search Results for `%s` by `%s`'%(search_string, query_by))
     search_parameters = {
         'q'         : search_string,
         'query_by'  : query_by,

@@ -66,3 +66,7 @@ async def main():
 
     refresh_task.close()
     toast("You have left the chat room")
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

@@ -3,6 +3,7 @@
 #2) customize function edit_table() and delete_table().
 #3) use line133 to instantiate a CRUDTable object, and use CRUDTable.put_crud_table() method to output it to your web app as in line 134.
 
+from pywebio import *
 from pywebio.output import *
 from pywebio.input import *
 from pywebio.session import *
@@ -133,3 +134,5 @@ def main():
     growth_table = CRUDTable(gen_data_func=generate_datatable, edit_func=edit_table, del_func=delete_table)
     growth_table.put_crud_table()
     
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)

@@ -2,7 +2,9 @@ from docarray import Document
 from pywebio import session, config, start_server 
 from pywebio.output import *
 from pywebio.pin import *
+import os
 
+os.environ["JINA_HUB_ROOT"] = "/tmp/.jina" 
 
 server_url = 'grpc://dalle-flow.jina.ai:51005'
 
@@ -65,7 +67,6 @@ def diffused_gen(da, fav_id):
             put_image(image_data).onclick(lambda x=i: upscale_gen(diffused, x))
     except:
         popup('The demo server returned an error. Please come back in 5 mins and try again.')
-
 
 
 @use_scope('images', clear=True)

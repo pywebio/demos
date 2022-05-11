@@ -1,6 +1,9 @@
 import plotly.express as px
 import pickle
 from app import _web3
+import os
+
+chart_data_file = os.path.join(os.path.dirname(__file__), "__chart_data.ob")
 
 #At first run, download data for the latest blocks and save to a local pickle file
 def generate_data(n=1000):
@@ -31,15 +34,12 @@ def get_block_miners():
         labels={"x": "Miner Rank", "y": "Number of Blocks Mined"},
         title=f"Top Mining Accounts from Sample of 1,000 Blocks",
         template="plotly_dark",
-        #! Doesn't work with older plotly on pywebio build website
-        # markers=True,
     )
     return fig.to_html(include_plotlyjs="require", full_html=False)
 
 
 def get_data():
     global chart_data_file
-    chart_data_file = "__chart_data.ob"
     try:
         with open(chart_data_file, "rb") as fp:
             try:

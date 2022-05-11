@@ -49,7 +49,6 @@ def display_task(tasks):
         scope='tasks',
     )
     
-@platform.utils.seo('To-Do List', 'A to-do list made using PyWebIO.')
 def main():
     'A todo list app built on pyweb.io'
     global todo_data_file
@@ -71,3 +70,7 @@ def main():
         if tasks: display_task(tasks)
         while True:
             add_task(tasks)
+
+
+if __name__ == '__main__':
+    start_server(main, debug=True, port=9999)
