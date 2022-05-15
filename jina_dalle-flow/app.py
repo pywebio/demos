@@ -7,8 +7,6 @@ import os, io, uuid
 from discord import Webhook, RequestsWebhookAdapter, Embed, File
 import urllib.parse
 
-os.environ["DISCORD_WEBHOOK"] = 'https://discord.com/api/webhooks/974727187385159780/kzF5NJJIbJ1CR_jUMYc1IoW-_reQtX5FSC2CWClR2blBM-C2oHFURWcESA7745j7lah3'
-
 _discord_webhook_url = os.environ["DISCORD_WEBHOOK"]
 _webhook = Webhook.from_url(_discord_webhook_url, adapter=RequestsWebhookAdapter())
 os.environ["JINA_HUB_ROOT"] = "/tmp/.jina"
@@ -48,7 +46,6 @@ This app is inspired by [JinaAI's DALL·E Flow project](https://github.com/jina-
 '''
 
 def send_discord_result(prompt, image_data, stage):
-
     filename = uuid.uuid4().hex + '.png'
     file_path = os.path.join(file_dir, 'temp/', filename)
     
