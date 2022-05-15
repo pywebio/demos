@@ -93,7 +93,7 @@ def preview_image_gen(prompt):
 css = """
 #pywebio-scope-page {
     height: calc(100vh - 150px);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 """
 
