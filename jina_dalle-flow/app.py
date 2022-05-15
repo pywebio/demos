@@ -6,6 +6,8 @@ import os, io, uuid
 from discord import Webhook, RequestsWebhookAdapter, Embed, File
 import urllib.parse
 
+os.environ["DISCORD_WEBHOOK"] = 'https://discord.com/api/webhooks/974727187385159780/kzF5NJJIbJ1CR_jUMYc1IoW-_reQtX5FSC2CWClR2blBM-C2oHFURWcESA7745j7lah3'
+
 _discord_webhook_url = os.environ["DISCORD_WEBHOOK"]
 _webhook = Webhook.from_url(_discord_webhook_url, adapter=RequestsWebhookAdapter())
 
@@ -81,6 +83,7 @@ def upscale_gen(prompt, diffused, dfav_id):
         image_data = fav.uri
         put_image(image_data) 
     except:
+        clear()
         popup('The demo server returned an error. Please come back in 15 mins and try again.')
 
 
@@ -99,6 +102,7 @@ def diffused_gen(prompt, da, fav_id):
             image_data = diffused[i, 'uri']
             put_image(image_data).onclick(lambda x=i: upscale_gen(prompt, diffused, x))
     except:
+        clear()
         popup('The demo server returned an error. Please come back in 15 mins and try again.')
 
 
@@ -118,6 +122,7 @@ def preview_image_gen(prompt):
                 image_data = da[i, 'uri']
                 put_image(image_data).onclick(lambda x=i: diffused_gen(prompt, da, x))
         except:
+            clear()
             popup('The demo server returned an error. Please come back in 15 mins and try again.')
 
 
@@ -127,21 +132,18 @@ def main():
     
     put_markdown('# Dall-E Flow Web App')
     put_row(
-        [put_scope('page'), None, put_scope('credits').style('background: #f6f6f6')],
-        size="minmax(60%, 6fr) 40px 1fr",
+        [put_scope('input'), None, put_scope('images')],
+        size="2fr 40px minmax(60%, 6fr)",
     )
-    
-    with use_scope('page'):
+
+    with use_scope('input'):
         put_textarea('description', 
             placeholder=step1, 
             rows=5,
             help_text='E.g., An oil painting of a humanoid robot playing chess in the style of Matisse'
         ),
         put_button('Draw', onclick=lambda: preview_image_gen(pin['description']))
-        put_scope('images')
-
-    with use_scope('credits'):
-        put_markdown(credits).style('font-size: 12px; color: gray')    
+        put_markdown(credits).style('font-size: 12px; color: gray; background: #f6f6f6')    
 
 if __name__ == '__main__':
     start_server(main, debug=True, port=9999)
