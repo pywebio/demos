@@ -1,5 +1,4 @@
 import logging
-
 from docarray import Document
 from pywebio import session, config, start_server
 from pywebio.output import *
@@ -18,6 +17,8 @@ server_url = 'grpc://dalle-flow.jina.ai:51005'
 
 file_dir = os.path.dirname(os.path.abspath(__file__))
 
+server_error_text = 'The demo server returned an error. Please come back in 5 mins and try again.'
+image_gen_text = 'Generating images...\nThanks to JinaAI for providing the image generation service to public for free. This process may take up to 10 mins. Please be patient.'
 step1 = "Step 1/3: Write down what you want to draw, and hit the `Draw` button. Up to 16 candidate images will be generated."
 step2 = "Step 2/3: Click on your favorite image to fine tune it."
 step3 = "Step 3/3: Choose one to generate a high-res image (1024 x 1024 px)"
@@ -77,7 +78,7 @@ def upscale_gen(prompt, diffused, dfav_id):
     global server_url
     fav = diffused[dfav_id]
     send_discord_result(prompt, diffused[dfav_id, 'uri'], 'diffused')
-    put_text('Generating images... (This process may take up to 5 mins. Please be patient.)')
+    put_text(image_gen_text)
     try:
         with put_loading():
             fav = fav.post(f'{server_url}/upscale', target_executor='upscaler')
@@ -87,7 +88,7 @@ def upscale_gen(prompt, diffused, dfav_id):
     except Exception as e:
         logging.exception(e)
         clear()
-        popup('The demo server returned an error. Please come back in 5 mins and try again.')
+        popup(server_error_text)
 
 
 @use_scope('images', clear=True)
@@ -95,7 +96,7 @@ def diffused_gen(prompt, da, fav_id):
     global server_url
     fav = da[fav_id]
     send_discord_result(prompt, da[fav_id, 'uri'], 'preview')
-    put_text('Generating images... (This process may take up to 10 mins. Please be patient.)')
+    put_text(image_gen_text)
     try:
         with put_loading():
             diffused = fav.post(f'{server_url}', parameters={'skip_rate': 0.5, 'num_images': 9},
@@ -108,7 +109,7 @@ def diffused_gen(prompt, da, fav_id):
     except Exception as e:
         logging.exception(e)
         clear()
-        popup('The demo server returned an error. Please come back in 5 mins and try again.')
+        popup(server_error_text)
 
 
 @use_scope('images', clear=True)
@@ -117,29 +118,51 @@ def preview_image_gen(prompt):
     if prompt.replace(" ", "") == '':
         toast('Please input a valid sentence', color='error', duration=10)
     else:
-        put_text('Generating images... (This process may take up to 10 mins. Please be patient.)')
+        put_text(image_gen_text)
         try:
             with put_loading():
                 da = Document(text=prompt).post(server_url, parameters={'num_images': 8}).matches
             clear()
             put_text(step2)
-            for i in range(0,16):
+            for i in range(0, 16):
                 image_data = da[i, 'uri']
                 put_image(image_data).onclick(lambda x=i: diffused_gen(prompt, da, x))
         except Exception as e:
             logging.exception(e)
             clear()
-            popup('The demo server returned an error. Please come back in 15 mins and try again.')
+            popup(server_error_text)
 
 
 css = """
-#pywebio-scope-page {
+#pywebio-scope-images {
     height: calc(100vh - 150px);
-    overflow-y: auto;
+    overflow-y: hidden;
+}
+#pywebio-scope-images:hover {
+    overflow-y: scroll;
 }
 #pywebio-scope-input {
     height: calc(100vh - 150px);
-    overflow-y: auto;
+    overflow-y: hidden;
+}
+#pywebio-scope-input:hover {
+    overflow-y: scroll;
+}
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+}
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 7px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 20px;
+  border: 2px
 }
 """
 
@@ -154,13 +177,17 @@ def main():
     )
 
     with use_scope('input'):
-        put_textarea('description', 
-                     placeholder=step1, 
-                     rows=5,
-                     help_text='E.g., An oil painting of a humanoid robot playing chess in the style of Matisse'
-                     ),
+        put_textarea('description',
+            placeholder='E.g., An oil painting of a humanoid robot playing chess in the style of Matisse',
+            rows=5,
+        ),
         put_button('Draw', onclick=lambda: preview_image_gen(pin['description']))
-        put_markdown(credits).style('font-size: 12px; color: gray; background: #f6f6f6')    
+        put_markdown(credits).style('font-size: 12px; color: gray; background: #f6f6f6;')
+    
+    with use_scope('images'):
+        put_markdown('### How it works')
+        for step in [step1, step2, step3]:
+            put_text(step)
 
 if __name__ == '__main__':
     start_server(main, debug=True, port=9999)
