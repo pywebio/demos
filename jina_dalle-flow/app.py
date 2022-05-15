@@ -1,5 +1,7 @@
+import logging
+
 from docarray import Document
-from pywebio import session, config, start_server 
+from pywebio import session, config, start_server
 from pywebio.output import *
 from pywebio.pin import *
 import os, io, uuid
@@ -10,8 +12,8 @@ os.environ["DISCORD_WEBHOOK"] = 'https://discord.com/api/webhooks/97472718738515
 
 _discord_webhook_url = os.environ["DISCORD_WEBHOOK"]
 _webhook = Webhook.from_url(_discord_webhook_url, adapter=RequestsWebhookAdapter())
+os.environ["JINA_HUB_ROOT"] = "/tmp/.jina"
 
-os.environ["JINA_HUB_ROOT"] = "/tmp/.jina" 
 server_url = 'grpc://dalle-flow.jina.ai:51005'
 
 file_dir = os.path.dirname(os.path.abspath(__file__))
@@ -81,10 +83,11 @@ def upscale_gen(prompt, diffused, dfav_id):
             fav = fav.post(f'{server_url}/upscale', target_executor='upscaler')
         clear()
         image_data = fav.uri
-        put_image(image_data) 
-    except:
+        put_image(image_data)
+    except Exception as e:
+        logging.exception(e)
         clear()
-        popup('The demo server returned an error. Please come back in 15 mins and try again.')
+        popup('The demo server returned an error. Please come back in 5 mins and try again.')
 
 
 @use_scope('images', clear=True)
@@ -95,15 +98,17 @@ def diffused_gen(prompt, da, fav_id):
     put_text('Generating images... (This process may take up to 10 mins. Please be patient.)')
     try:
         with put_loading():
-            diffused = fav.post(f'{server_url}', parameters={'skip_rate': 0.5, 'num_images': 9}, target_executor='diffusion').matches
+            diffused = fav.post(f'{server_url}', parameters={'skip_rate': 0.5, 'num_images': 9},
+                                target_executor='diffusion').matches
         clear()
         put_text(step3)
         for i in range(0, 9):
             image_data = diffused[i, 'uri']
             put_image(image_data).onclick(lambda x=i: upscale_gen(prompt, diffused, x))
-    except:
+    except Exception as e:
+        logging.exception(e)
         clear()
-        popup('The demo server returned an error. Please come back in 15 mins and try again.')
+        popup('The demo server returned an error. Please come back in 5 mins and try again.')
 
 
 @use_scope('images', clear=True)
@@ -121,15 +126,27 @@ def preview_image_gen(prompt):
             for i in range(0,16):
                 image_data = da[i, 'uri']
                 put_image(image_data).onclick(lambda x=i: diffused_gen(prompt, da, x))
-        except:
+        except Exception as e:
+            logging.exception(e)
             clear()
             popup('The demo server returned an error. Please come back in 15 mins and try again.')
 
 
-@config(theme="minty")
+css = """
+#pywebio-scope-page {
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+#pywebio-scope-input {
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+"""
+
+@config(theme="minty", css_style=css)
 def main():
     session.set_env(title='Dall-E Flow Web App', output_max_width='100%')
-    
+
     put_markdown('# Dall-E Flow Web App')
     put_row(
         [put_scope('input'), None, put_scope('images')],
@@ -138,10 +155,10 @@ def main():
 
     with use_scope('input'):
         put_textarea('description', 
-            placeholder=step1, 
-            rows=5,
-            help_text='E.g., An oil painting of a humanoid robot playing chess in the style of Matisse'
-        ),
+                     placeholder=step1, 
+                     rows=5,
+                     help_text='E.g., An oil painting of a humanoid robot playing chess in the style of Matisse'
+                     ),
         put_button('Draw', onclick=lambda: preview_image_gen(pin['description']))
         put_markdown(credits).style('font-size: 12px; color: gray; background: #f6f6f6')    
 
